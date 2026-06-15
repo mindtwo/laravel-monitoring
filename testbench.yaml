@@ -1,0 +1,9 @@
+providers:
+  - Mindtwo\Monitoring\Laravel\MonitoringServiceProvider
+
+env:
+  - DB_CONNECTION=testing
+  - CACHE_DRIVER=array
+  - CACHE_STORE=array
+  - SESSION_DRIVER=array
+  - QUEUE_CONNECTION=sync

@@ -1,0 +1,17 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - src
+        - config
+    phpVersion: 80100
+    treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        # env() inside a package config file is the documented Laravel pattern;
+        # larastan only recognizes the application's own config directory.
+        -
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            path: config/monitoring.php
