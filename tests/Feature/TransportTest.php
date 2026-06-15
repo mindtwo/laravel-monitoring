@@ -59,6 +59,21 @@ test('server errors are reported with status code and excerpt', function () {
         ->and($result->error)->toContain('ingest exploded');
 });
 
+test('a redirecting endpoint is reported as a failure and never silently followed', function () {
+    Http::fake([
+        'monitoring.mindtwo.com/api/monitoring' => Http::response('', 301, [
+            'Location' => 'https://monitoring.mindtwo.com/api/monitoring/',
+        ]),
+    ]);
+
+    $result = app(Monitor::class)->push();
+
+    expect($result->success)->toBeFalse()
+        ->and($result->statusCode)->toBe(301);
+
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'POST');
+});
+
 test('connection failures are reported without throwing', function () {
     Http::fake(fn () => throw new Illuminate\Http\Client\ConnectionException('Connection refused'));
 

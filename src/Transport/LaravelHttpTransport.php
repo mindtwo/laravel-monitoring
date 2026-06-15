@@ -48,6 +48,7 @@ final class LaravelHttpTransport implements Transport
                 ->acceptJson()
                 ->timeout(max(1, (int) $this->config->get('timeout', 15)))
                 ->connectTimeout(5)
+                ->withoutRedirecting()
                 ->post($this->config->endpoint());
 
             if ($response->successful()) {
